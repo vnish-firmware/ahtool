@@ -22,7 +22,8 @@ def read_fpgaid(host, opts):
 
         shell.disconnect()
     except ShellError:
-        pint(f'{host}: failed to obtain FPGA ID')
+        print(f'{host}: failed to obtain FPGA ID')
+        raise
 
 def read_devid(host, opts):
     try:
@@ -38,4 +39,24 @@ def read_devid(host, opts):
         print(f'{host}: devid: {output}', end = '')
         shell.disconnect()
     except ShellError:
-        printf(f'{host}: failed to obtain device id')
+        print(f'{host}: failed to obtain device id')
+        raise
+
+def change_ssh_passwd(host, opts):
+    try:
+        shell = SshShell(host, opts.ssh_port, opts.ssh_user, opts.ssh_pass)
+        shell.connect()
+
+        cmd = ' | '.join([
+            f'printf "{opts.ssh_new_pass}\\n{opts.ssh_new_pass}"',
+            f'passwd {opts.ssh_user}'
+        ])
+
+        print(f'CMD: {cmd}')
+        output = shell.execute(cmd)
+        print(f'{host}: {output}')
+        print(f'{host}: Password changed successfully!')
+        shell.disconnect()
+    except ShellError:
+        print(f'{host}: failed to change the password')
+        raise

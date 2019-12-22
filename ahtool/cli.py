@@ -4,7 +4,7 @@ import traceback
 import click
 import netaddr
 
-from ahtool.tool import read_fpgaid, read_devid
+from ahtool.tool import read_fpgaid, read_devid, change_ssh_passwd
 
 
 class Options:
@@ -34,17 +34,20 @@ pass_options = click.make_pass_decorator(Options, ensure=True)
               help='The password used for SSH authentication')
 @click.option('--ssh-port', default=22, metavar='PORT',
               help='The port used for SSH connections')
+@click.option('--ssh-new-pass', default='brothersnoob', metavar='NEW_PASS',
+              help='New SSH password')
 @click.option('--ip', metavar='MINER',
               help='The miner IP address or range of IP addresses')
 @click.option('--ip-list', metavar='MINERS',
               help='The file containing a list of miner IP addresses')
 @pass_options
-def cli(opts, tasks, ssh_user, ssh_pass, ssh_port, ip, ip_list):
+def cli(opts, tasks, ssh_user, ssh_pass, ssh_port, ssh_new_pass, ip, ip_list):
     """Anthill Farm Tool"""
     opts.tasks = tasks
     opts.ssh_user = ssh_user
     opts.ssh_pass = ssh_pass
     opts.ssh_port = ssh_port
+    opts.ssh_new_pass = ssh_new_pass
 
     if ip_list is not None:
         opts.miners = load_miners_from_file(ip_list)
@@ -111,6 +114,11 @@ def devid(opts):
     """Obtain device unique id from the miner(s)"""
     process(opts.miners, opts, read_devid)
 
+@cli.command()
+@pass_options
+def change_passwd(opts):
+    """Change the current SSH password"""
+    process(opts.miners, opts, change_ssh_passwd)
 
 if __name__ == '__main__':
     cli()
