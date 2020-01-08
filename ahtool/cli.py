@@ -34,8 +34,8 @@ pass_options = click.make_pass_decorator(Options, ensure=True)
               help='The password used for SSH authentication')
 @click.option('--ssh-port', default=22, metavar='PORT',
               help='The port used for SSH connections')
-@click.option('--ssh-new-pass', default='brothersnoob', metavar='NEW_PASS',
-              help='New SSH password')
+@click.option('--ssh-new-pass', default='s3cr3t', metavar='NEW_PASS',
+              help='New SSH password (default is s3cr3t)')
 @click.option('--ip', metavar='MINER',
               help='The miner IP address or range of IP addresses')
 @click.option('--ip-list', metavar='MINERS',

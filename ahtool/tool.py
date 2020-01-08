@@ -52,9 +52,7 @@ def change_ssh_passwd(host, opts):
             f'passwd {opts.ssh_user}'
         ])
 
-        print(f'CMD: {cmd}')
         output = shell.execute(cmd)
-        print(f'{host}: {output}')
         print(f'{host}: Password changed successfully!')
         shell.disconnect()
     except ShellError:
