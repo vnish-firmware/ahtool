@@ -1,6 +1,8 @@
-# Log
+__pycache__
+
+# Local stuff
 anthill-tool.log
-# Miners
 miners.txt
-# Releases
-releases/
+build
+
+

@@ -5,6 +5,7 @@ import click
 import netaddr
 
 from ahtool.tool import read_fpgaid, read_devid, change_ssh_passwd
+from ahtool.tool import find_mode_on, find_mode_off, uninstall_anthill
 
 
 class Options:
@@ -119,6 +120,24 @@ def devid(opts):
 def change_passwd(opts):
     """Change the current SSH password"""
     process(opts.miners, opts, change_ssh_passwd)
+
+@cli.command()
+@pass_options
+def leds_on(opts):
+    """Enable blinking of leds"""
+    process(opts.miners, opts, find_mode_on)
+
+@cli.command()
+@pass_options
+def leds_off(opts):
+    """Disable blinking of leds"""
+    process(opts.miners, opts, find_mode_off)
+
+@cli.command()
+@pass_options
+def uninstall(opts):
+    """Remove Anthill integration"""
+    process(opts.miners, opts, uninstall_anthill)
 
 if __name__ == '__main__':
     cli()
